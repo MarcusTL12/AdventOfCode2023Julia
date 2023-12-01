@@ -24,8 +24,6 @@ function part1()
 
             y = 10d1 + d2
 
-            @show y
-
             x += y
         end
     end
@@ -68,7 +66,6 @@ function part2()
             d2 = 0
 
             for m in eachmatch(reg, l, overlap=true)
-                # @show m.match
                 dg = d[m.match]
                 i += 1
                 if i == 1
@@ -78,8 +75,6 @@ function part2()
             end
 
             y = 10d1 + d2
-
-            # @show y
 
             x += y
         end
