@@ -6,7 +6,7 @@ function part1()
     grid = Char[]
 
     open("$(homedir())/aoc-input/2023/day3/input") do io
-        for (id, l) in enumerate(eachline(io))
+        for l in eachline(io)
             n = length(l)
             m += 1
             append!(grid, l)
@@ -53,7 +53,7 @@ function part2()
     grid = Char[]
 
     open("$(homedir())/aoc-input/2023/day3/input") do io
-        for (id, l) in enumerate(eachline(io))
+        for l in eachline(io)
             lx = length(l)
             ly += 1
             append!(grid, l)
