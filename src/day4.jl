@@ -25,7 +25,6 @@ end
 
 
 function part2()
-    scores = Int[]
     winners = Int[]
 
     open("$(homedir())/aoc-input/2023/day4/input") do io
@@ -39,14 +38,7 @@ function part2()
 
             st = intersect(Set(s1), Set(s2))
 
-            y = 0
-
-            if length(st) > 0
-                y = 2^(length(st) - 1)
-            end
-
             push!(winners, length(st))
-            push!(scores, y)
         end
     end
 
