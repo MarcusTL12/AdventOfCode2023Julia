@@ -13,11 +13,8 @@ function part1()
 
             st = intersect(Set(s1), Set(s2))
 
-            @show st
-
             if length(st) > 0
                 y = 2^(length(st) - 1)
-                @show y
                 x += y
             end
         end
@@ -28,8 +25,6 @@ end
 
 
 function part2()
-    x = 0
-
     scores = Int[]
     winners = Int[]
 
