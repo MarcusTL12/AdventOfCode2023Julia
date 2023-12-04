@@ -42,9 +42,9 @@ function part2()
         end
     end
 
-    n_cards = ones(Int, length(scores))
+    n_cards = ones(Int, length(winners))
 
-    for i in eachindex(scores)
+    for i in eachindex(winners)
         nw = winners[i]
         n_cards[(i+1):(i+nw)] .+= n_cards[i]
     end
