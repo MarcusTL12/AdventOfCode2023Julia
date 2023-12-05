@@ -111,15 +111,16 @@ function map_range(rng, map_rng)
 end
 
 function map_block(inp_ranges, mp)
+    other_inp_ranges = eltype(inp_ranges)[]
     mapped_ranges = eltype(inp_ranges)[]
 
     for map_rng in eachcol(mp)
-        new_inp_ranges = eltype(inp_ranges)[]
+        empty!(other_inp_ranges)
         for inp_range in inp_ranges
             rem1, rem2, mapped = map_range(inp_range, map_rng)
             for rng in (rem1, rem2)
                 if length(rng) > 0
-                    push!(new_inp_ranges, rng)
+                    push!(other_inp_ranges, rng)
                 end
             end
 
@@ -127,7 +128,7 @@ function map_block(inp_ranges, mp)
                 push!(mapped_ranges, mapped)
             end
         end
-        inp_ranges = new_inp_ranges
+        inp_ranges, other_inp_ranges = other_inp_ranges, inp_ranges
     end
 
     append!(mapped_ranges, inp_ranges)
