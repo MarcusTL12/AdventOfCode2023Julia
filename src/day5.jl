@@ -61,7 +61,7 @@ function part1()
 end
 
 function part2()
-    inp = open(String ∘ read, "$(homedir())/aoc-input/2023/day5/input")
+    inp = open(String ∘ read, "$(homedir())/aoc-input/2023/day5/ex1")
 
     blocks = eachsplit(inp, "\n\n")
 
@@ -88,9 +88,49 @@ function part2()
     minimum(minlocs)
 end
 
+@inline function rangediff(r1, r2)
+    first(r1):min(last(r1), first(r2) - 1),
+    max(first(r1), last(r2) + 1):last(r1)
+end
+
 function map_range(rng, map_rng)
     (dstart, sstart, l) = map_rng
-    
+
+    srange = range(sstart, length=l)
+    drange = range(dstart, length=l)
+
+    mapped_range = intersect(rng, srange)
+
+    remleft, remright = rangediff(rng, mapped_range)
+
+    ind_range = mapped_range .- (sstart - 1)
+
+    dest_range = @inbounds drange[ind_range]
+
+    remleft, remright, dest_range
+end
+
+function map_block(inp_ranges, mp)
+    mapped_ranges = eltype(inp_ranges)[]
+
+    for map_rng in eachcol(mp)
+        new_inp_ranges = eltype(inp_ranges)[]
+        for inp_range in inp_ranges
+            rem1, rem2, mapped = map_range(inp_range, map_rng)
+            for rng in (rem1, rem2)
+                if length(rng) > 0
+                    push!(new_inp_ranges, rng)
+                end
+            end
+
+            if length(mapped) > 0
+                push!(mapped_ranges, mapped)
+            end
+        end
+        inp_ranges = new_inp_ranges
+    end
+
+    append!(mapped_ranges, inp_ranges)
 end
 
 function part2_smart()
@@ -105,5 +145,13 @@ function part2_smart()
 
     seeds = reshape(seeds, 2, length(seeds) ÷ 2)
 
+    seeds = [range(start, length=l) for (start, l) in eachcol(seeds)]
+
     maps = parse_map.(map_blocks)
+
+    for mp in maps
+        seeds = map_block(seeds, mp)
+    end
+
+    minimum(minimum, seeds)
 end
