@@ -156,3 +156,57 @@ function part2_smart()
 
     minimum(minimum, seeds)
 end
+
+function map_min(inp_range, mp, rest)
+    if isempty(inp_range)
+        return typemax(Int)
+    end
+
+    if size(mp, 2) == 0
+        return if isempty(rest)
+            minimum(inp_range)
+        else
+            map_min(inp_range, Iterators.peel(rest)...)
+        end
+    end
+
+    map_rng = @view mp[:, 1]
+    rest_mp = @view mp[:, 2:end]
+
+    rem1, rem2, mapped = map_range(inp_range, map_rng)
+
+    min1 = if isempty(mapped)
+        typemax(Int)
+    elseif isempty(rest)
+        minimum(mapped)
+    else
+        map_min(mapped, Iterators.peel(rest)...)
+    end
+
+    min2 = map_min(rem1, rest_mp, rest)
+
+    min3 = map_min(rem2, rest_mp, rest)
+
+    min(min1, min2, min3)
+end
+
+function part2_smart2()
+    inp = open(String ∘ read, "$(homedir())/aoc-input/2023/day5/input")
+
+    blocks = eachsplit(inp, "\n\n")
+
+    seed_block, map_blocks = Iterators.peel(blocks)
+
+    _, seeds = eachsplit(seed_block, ": ")
+    seeds = parse.(Int, eachsplit(seeds))
+
+    seeds = reshape(seeds, 2, length(seeds) ÷ 2)
+
+    seeds = [range(start, length=l) for (start, l) in eachcol(seeds)]
+
+    maps = parse_map.(map_blocks)
+
+    mp, rest = Iterators.peel(maps)
+
+    minimum(map_min(seed, mp, rest) for seed in seeds)
+end
