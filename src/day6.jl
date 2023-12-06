@@ -4,7 +4,7 @@ function get_num_ways(t, d)
     for ta in 0:t
         t_cruise = t - ta
         d_cruise = ta * t_cruise
-        if d_cruise >= d
+        if d_cruise > d
             n += 1
         end
     end
