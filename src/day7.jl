@@ -28,7 +28,9 @@ function find_hand_counts(hand)
     counts
 end
 
-function find_hand_type_counts(counts)
+function find_hand_type(hand)
+    counts = find_hand_counts(hand)
+
     if any(c == 5 for c in counts)
         7
     elseif any(c == 4 for c in counts)
@@ -49,13 +51,8 @@ function find_hand_type_counts(counts)
     end
 end
 
-function is_hand_less(hand1, hand2)
-    (find_hand_type_counts(find_hand_counts(hand1)), hand1) <
-    (find_hand_type_counts(find_hand_counts(hand2)), hand2)
-end
-
 function part1()
-    hands = Tuple{SVector{5,Int},Int}[]
+    hands = Tuple{Int,SVector{5,Int},Int}[]
 
     open("$(homedir())/aoc-input/2023/day7/input") do io
         for l in eachline(io)
@@ -63,13 +60,13 @@ function part1()
             hand = SVector((tocardnum(c) for c in h)...)
             b = parse(Int, b)
 
-            push!(hands, (hand, b))
+            push!(hands, (find_hand_type(hand), hand, b))
         end
     end
 
-    sort!(hands, lt=((h1, _), (h2, _)) -> is_hand_less(h1, h2))
+    sort!(hands)
 
-    sum(b * i for (i, (_, b)) in enumerate(hands))
+    sum(b * i for (i, (_, _, b)) in enumerate(hands))
 end
 
 function jokereq(c1, c2)
@@ -85,13 +82,14 @@ function find_hand_type_J(hand)
 
     nJ = counts[1]
     counts = setindex(counts, 0, 1)
+    counts = sort(counts, rev=true)
 
     function find_type_rec(nJ, counts)
         if nJ == 0
             find_hand_type_counts(counts)
         else
             best = find_hand_type_counts(counts)
-            for i in 2:13
+            for i in 1:2
                 new_counts = setindex(counts, counts[i] + 1, i)
                 best = max(best, find_type_rec(nJ - 1, new_counts))
             end
@@ -149,8 +147,6 @@ function part2()
     end
 
     sort!(hands)
-
-    display(hands)
 
     sum(b * i for (i, (_, _, b)) in enumerate(hands))
 end
