@@ -1,6 +1,14 @@
 
+function diff_first!(nums)
+    for i in 1:length(nums)-1
+        nums[i] = nums[i+1] - nums[i]
+    end
+
+    @view nums[1:end-1]
+end
+
 function extrapolate(nums)
-    dn = diff(nums)
+    dn = @inline diff_first!(nums)
     if all(==(0), dn)
         last(nums)
     else
@@ -14,8 +22,16 @@ function part1()
     end
 end
 
+function diff_last!(nums)
+    for i in reverse(1:length(nums)-1)
+        nums[i+1] = nums[i+1] - nums[i]
+    end
+
+    @view nums[2:end]
+end
+
 function extrapolate_back(nums)
-    dn = diff(nums)
+    dn = diff_last!(nums)
     if all(==(0), dn)
         first(nums)
     else
