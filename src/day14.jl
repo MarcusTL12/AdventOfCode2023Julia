@@ -70,22 +70,20 @@ function part2()
 
     grid = reshape(grid, n, m)
 
-    seen_grids = Dict{Matrix{Char},Int}(copy(grid) => 0)
-    ordered_grids = Matrix{Char}[]
+    seen_grids = Dict{UInt64,Int}(hash(grid) => 0)
 
     loop_start = -1
     loop_end = -1
 
     for i in 1:1000_000_000
         do_cycle!(grid)
-        if haskey(seen_grids, grid)
-            loop_start = seen_grids[grid]
+        hgrid = hash(grid)
+        if haskey(seen_grids, hgrid)
+            loop_start = seen_grids[hgrid]
             loop_end = i
             break
         else
-            cgrid = copy(grid)
-            seen_grids[cgrid] = i
-            push!(ordered_grids, cgrid)
+            seen_grids[hgrid] = i
         end
     end
 
