@@ -33,7 +33,7 @@ function part2()
 
             delete!(m[h], k)
         else
-            k, v = split(entry, '=')
+            k, v = eachsplit(entry, '=')
             v = parse(Int, v)
             h = do_hash(k) + 1
 
