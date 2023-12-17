@@ -112,7 +112,7 @@ function part2()
         if nstraight >= 4
             for dirchange in (-1, 1)
                 ndir = mod1(dir + dirchange, 4)
-                npos = npos = pos .+ dirs[ndir]
+                npos = pos .+ dirs[ndir]
                 k = (npos, ndir, 1)
                 if isinbounds(npos) && k ∉ seen
                     enqueuemin!(k, heatloss + (grid[npos...] - '0'))
