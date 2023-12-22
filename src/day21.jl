@@ -141,10 +141,14 @@ function part2()
         count(iseven(x + n_steps) for x in values(seen))
     end
 
-    xs = 2:2:6
+    xs = 0:2
     ys = find_for_nw.(xs)
 
+    @show ys
+
     pol = fit(Polynomial{Int}, xs, ys)
+
+    @show pol
 
     pol(n_steps_total ÷ w)
 end
