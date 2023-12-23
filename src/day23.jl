@@ -68,7 +68,7 @@ function dfs_max(adj_mat, target)
             visited[pos] = true
 
             for i in eachindex(visited)
-                if !visited[i]
+                if !visited[i] && adj_mat[pos, i] != 0
                     push!(path, i)
                     rec(path)
                     pop!(path)
