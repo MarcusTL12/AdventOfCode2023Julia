@@ -116,9 +116,9 @@ function part2()
     s.check()
 
     model = s.model()
-    x = model.__getitem__(rx0)
-    y = model.__getitem__(ry0)
-    z = model.__getitem__(rz0)
+    x = model.__getitem__(rx0).as_fraction().numerator
+    y = model.__getitem__(ry0).as_fraction().numerator
+    z = model.__getitem__(rz0).as_fraction().numerator
 
     x + y + z
 end
