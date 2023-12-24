@@ -19,7 +19,6 @@ function part1()
     vel = reshape(vel, 3, length(vel) ÷ 3)
 
     boxmin, boxmax = big(200000000000000), big(400000000000000)
-    # boxmin, boxmax = 7, 27
 
     result = 0
 
@@ -54,10 +53,8 @@ function part1()
 
         t = @. (x - pos[1, [i, j]]) // vel[1, [i, j]]
 
-        # @show i, j, float(x), float(y), t
-
-        if boxmin <= x <= boxmax && boxmin <= y <= boxmax && all(t > 0 for t in t)
-            # @show "hei"
+        if boxmin <= x <= boxmax &&
+           boxmin <= y <= boxmax && all(t > 0 for t in t)
             result += 1
         end
     end
