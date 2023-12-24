@@ -89,19 +89,19 @@ function part2()
 
     z3 = pyimport("z3")
 
-    rx0 = z3.Int("rx0")
-    ry0 = z3.Int("ry0")
-    rz0 = z3.Int("rz0")
+    rx0 = z3.Real("rx0")
+    ry0 = z3.Real("ry0")
+    rz0 = z3.Real("rz0")
 
     rp0 = [rx0, ry0, rz0]
 
-    rvx = z3.Int("rvx")
-    rvy = z3.Int("rvy")
-    rvz = z3.Int("rvz")
+    rvx = z3.Real("rvx")
+    rvy = z3.Real("rvy")
+    rvz = z3.Real("rvz")
 
     rv = [rvx, rvy, rvz]
 
-    ts = [z3.Int("t$i") for i in axes(pos, 2)]
+    ts = [z3.Real("t$i") for i in axes(pos, 2)]
 
     s = z3.Solver()
 
@@ -115,5 +115,10 @@ function part2()
 
     s.check()
 
-    s.model()
+    model = s.model()
+    x = model.__getitem__(rx0)
+    y = model.__getitem__(ry0)
+    z = model.__getitem__(rz0)
+
+    x + y + z
 end
